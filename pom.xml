@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+        <groupId>com.ttpai</groupId>
+        <artifactId>ttpai_parent</artifactId>
+        <version>1.1</version>
+    </parent>
+  <artifactId>hongbo</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <repositories>
+        <repository>
+            <id>snapshotsId</id>
+            <name>snapshots</name>
+            <url>http://172.16.2.101:8081/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>thirdpartyId</id>
+            <name>thirdparty</name>
+            <url>http://172.16.2.101:8081/nexus/content/repositories/thirdparty/</url>
+        </repository>
+        <repository>
+            <id>releasesId</id>
+            <name>releases</name>
+            <url>http://172.16.2.101:8081/nexus/content/repositories/releases/</url>
+        </repository>
+    </repositories>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.1</version>
+        </dependency>
+        <!-- fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+    
+  </dependencies>
+  <build>
+    <finalName>hongbo</finalName>
+  </build>
+</project>
