@@ -91,34 +91,14 @@ public class HttpUtil {
 	}
 	
 	public static String get(String url,Map<String, String> params) {
-		try{
-			if(params!=null){
-				url += "?";
-				for(String key:params.keySet()){
-					url += key+"="+params.get(key)+"&";
-				}
-				System.out.println("url:"+url);
+		if(params!=null){
+			url += "?";
+			for(String key:params.keySet()){
+				url += key+"="+params.get(key)+"&";
 			}
-			HttpGet httpGet = new HttpGet(url);
-			CloseableHttpResponse response = hc.execute(httpGet);
-			int statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode != 200) {
-				httpGet.abort();
-	            throw new RuntimeException("HttpClient,error status code :" + statusCode);
-	        }
-			HttpEntity entity = response.getEntity();
-	        String result = null;
-	        if (entity != null) {
-	            result = EntityUtils.toString(entity, CHARSET);
-	        }
-	        EntityUtils.consume(entity);
-	        response.close();
-	        System.out.println("result:"+result);
-	        return result;
-		}catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("url:"+url);
 		}
-		return null;
+		return get(url);
 	}
 	
 	public static String postInfoHeader(String url,String header,String info,String host) {
