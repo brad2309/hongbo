@@ -1,8 +1,12 @@
 package com.ttpai.httptest;
 
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.http.client.utils.DateUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ttpai.util.HttpUtil;
@@ -11,7 +15,7 @@ public class PushTest {
 	
 	public static void main(String[] args) throws Exception{
 		PushTest test= new PushTest();
-		String msg=test.buildAppMsg("hb1新增车源审核内容", "2017-10-10 10:10 车牌号码：沪A12345需再处理审核，请尽快处理。");
+		String msg=test.buildAppMsg("biaoti---hb", "neirong-----"+DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
 		System.out.println(msg);
 		String url="http://mobilevc.ttpai.cn/api/push?params="+ URLEncoder.encode(msg, "UTF-8");
 //		String url="http://localhost/mobile/api/push?params="+ URLEncoder.encode(msg, "UTF-8");
@@ -21,7 +25,7 @@ public class PushTest {
 	
 	public String buildAppMsg(String title, String content) {
 		PushMessageBean msg = new PushMessageBean();
-		msg.setUserIds("288386");
+		msg.setUserIds("1844");//671882 753 288386 676811
 		msg.setSendType("unicast");
 		msg.setDisplayType("message");
 		msg.setAppProductType("2");
@@ -30,7 +34,7 @@ public class PushTest {
 		msg.setText(content);
 		// 设置bossapp消息推送类型为8
 		msg.getExtra().put("id", "14");
-		msg.getExtra().put("messageType", "8");
+		msg.getExtra().put("messageType", "11");
 		return JSONObject.toJSONString(msg);
 	}
 	

@@ -2,9 +2,12 @@ package com.ttpai.httptest;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -25,24 +28,73 @@ public class HttpTest {
 	public static void main(String[] args) throws Exception{
 //		testCheckerApi();
 //		pubapi1002();
-		logappAdd();
+//		logappAdd();
+//		handlerReferer();
+//		testCustomerApi();
+		pubapi1001();
+//		dealer();
+//		boss();
+//		mobile1001();
+//		pubapi1003();
+//		test();
+	}
+	
+	static void test(){
+		final String url = "http://localhost/customer/api";
+		Runnable r = new Runnable() {
+			
+			public void run() {
+				HttpUtil.get(url);
+			}
+		};
+		Thread t1 = new Thread(r);
+		Thread t2 = new Thread(r);
+		Thread t3 = new Thread(r);
+		t1.start();
+		t2.start();
+		t3.start();
+	}
+	
+	static void dealer(){
+		Map<String,String> params = new HashMap<String,String>();
+		Map<String,String> header = new HashMap<String,String>();
+		header.put("host", "checker.ttpai.cn");
+		String url = "http://api.ttpai.cn/checkerServlet";
+		HttpUtil.post(url, params, header);
+	}
+	static void boss(){
+		String header = wrapperData(AppRequest.header1001);
+		String info = wrapperData(AppRequest.ttp1001);
+		String url = "http://api.ttpai.cn/bossapp";
+		String host = "bossapp.ttpai.cn";
+		String result = HttpUtil.postInfoHeader(url,header,info,host);
+		System.out.println("----------------------");
+		result = unWrappedData(result);
+		System.out.println("decode result:"+result);
+	}
+	
+	static void handlerReferer(){
+		Map<String,String> map = new HashMap<String, String>();
+		map.put("referer", "https://servicewechat.com/122/1.2.3/page-frame.html");
+		map.put("host", "wxapp.ttpai.cn");
+		String url = "http://api.ttpai.cn/wxminiapp/handlerReferer";
+		HttpUtil.post(url, null, map);
 	}
 	
 	static void logappAdd(){
-		String url = "http://localhost/logapp/logappapi/add";
+//		String url = "http://localhost/logapp/logappapi/add";
+		String url = "http://api.ttpai.cn/logappapi/add";
 		JSONObject jo = new JSONObject();
-		jo.put("app", "dealer");
+		jo.put("app", "checker");
 		jo.put("type", "Android");
-		jo.put("version", "1.0.1");
-		jo.put("content", "1234少时诵诗书");
+		jo.put("version", "2.5.8");
+		jo.put("isServer", "0");
+		jo.put("content", "测试日志----"+DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		Map<String, String> map = new HashMap<String, String>();
-//		map.put("info", encodeUrl(jo.toJSONString()));
-//		url += encodeUrl(jo.toJSONString());
-//		url += jo.toJSONString();
-		System.out.println(url);
-//		HttpUtil.get(url,map);
 		map.put("info", jo.toJSONString());
-		HttpUtil.post(url, map);
+		Map<String, String> header = new HashMap<String, String>();
+		header.put("host", "logapp.ttpai.cn");
+		HttpUtil.post(url, map,header);
 	}
 	
 	static void pubapi1002(){
@@ -60,12 +112,14 @@ public class HttpTest {
 	
 	static void pubapi1001(){
 		String url = "http://pubapi.ttpai.cn/v1.0/mobile/getLatestVersion?appid=10014&info=";
+//		String url = "http://localhost/v1.0/mobile/getLatestVersion?appid=10014&info=";
 		JSONObject jo = new JSONObject();
-		jo.put("type", "android_boss");
-		url += jo.toJSONString();
+//		jo.put("type", "android_boss");
+		jo.put("type", "android_checker_new");
+		jo.put("version", "2.3.4");
+		url += encodeUrl(jo.toJSONString());
 		System.out.println(url);
-		String res = HttpUtil.get(url);
-		System.out.println("-----------"+res);
+		HttpUtil.get(url);
 	}
 	
 	/**pai调用pubapi登录*/
@@ -81,14 +135,24 @@ public class HttpTest {
 		System.out.println("-----------"+res);
 	}
 	
-	/**调用checker api新格式接口*/
+	/**调用checker api新格式接口100001*/
 	public static void testCheckerApi() throws Exception{
-		String header = "4Gic94 IDvbCPBEhemm cgkMLXqM2F1Z73d40dD0s3sd4eXTkHg2keyu5EpKtNAaZbLqH3ZsJyKapnKz7gunINdqCqYpgQqmBlq IEkoTyyJefRfIv7OFRH3//PysC9Pbu5YQRbQDWIrs949mvYYWxtWYC7jZ1puLKWUDiw pv87fGEdySHIYtu6 hKKPcoMr4Ho2QDt9HJIi/N985NawRwNdcTh08ErHhzObgOYCcxJGatC65Be7cnit2HFxWJpuJJ HfuA29TglaAOaCcyZOWh/4gVbjh1e huREhFMWwu8WKs454fciUBVXdQpLxJdqFpl7hiKOQew9UmYcd15w==";
-		String info = "5sCu90McMv9O0m0tWA8jALizCp3cPAvo4a9QH6AsbLhWpX2D68ekvP ZACSIyk 6NBDiUruU62JhWlq2LPFQw/yBuXHVCwwBmDFJDYJNemr7N1ELSUTQpfOxSl2allW0";
+		String header = wrapperData(AppRequest.header1001);
+		String info = wrapperData(AppRequest.ttp1001);
 		String url = "http://localhost/checkerServlet";
 		String host = null;
 		String result = HttpUtil.postInfoHeader(url,header,info,host);
-		result = DESUtil.decryptDESwithBase64(result, DES_KEY);
+		result = unWrappedData(result);
+		System.out.println("decode result:"+result);
+	}
+	/**调用customer api新格式接口100001*/
+	public static void testCustomerApi() throws Exception{
+		String header = wrapperData(AppRequest.header1001);
+		String info = wrapperData(AppRequest.ttp1001);
+		String url = "http://localhost/app";
+		String host = null;
+		String result = HttpUtil.postInfoHeader(url,header,info,host);
+		result = unWrappedData(result);
 		System.out.println("decode result:"+result);
 	}
 	
@@ -100,6 +164,42 @@ public class HttpTest {
 			throw new RuntimeException();
 		}
 	}
-		
+	
+	private static String unWrappedData(String str) {
+		try{
+			return DESUtil.decryptDESwithBase64(str, DES_KEY);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static String wrapperData(String str) {
+		try{
+			return DESUtil.encryptDESwithBase64(str, DES_KEY);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static String encodeBase64(String result) {
+		try{
+			return new String(Base64.encodeBase64(result.getBytes("UTF-8")), "UTF-8");
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+    }
+
+    public static String decodeBase64(String result) {
+        try{
+        	return new String(Base64.decodeBase64(result.getBytes("UTF-8")), "UTF-8");
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+    }
+   
 	
 }

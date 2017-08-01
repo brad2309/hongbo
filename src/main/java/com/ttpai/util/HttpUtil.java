@@ -104,7 +104,7 @@ public class HttpUtil {
 	public static String postInfoHeader(String url,String header,String info,String host) {
 		Map<String, String> h = new HashMap<String, String>();
 		h.put("ttp", header);
-//		h.put("host", host);
+		h.put("host", host);
 		Map<String, String> p = new HashMap<String, String>();
 		p.put("info", info);
 		return post(url, p, h);
