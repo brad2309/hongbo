@@ -34,25 +34,38 @@ public class HttpTest {
 		pubapi1001();
 //		dealer();
 //		boss();
-//		mobile1001();
 //		pubapi1003();
+//		pubapiSendMessage();
 //		test();
 	}
 	
 	static void test(){
-		final String url = "http://localhost/customer/api";
-		Runnable r = new Runnable() {
-			
-			public void run() {
-				HttpUtil.get(url);
-			}
-		};
-		Thread t1 = new Thread(r);
-		Thread t2 = new Thread(r);
-		Thread t3 = new Thread(r);
-		t1.start();
-		t2.start();
-		t3.start();
+		String url = "http://pubapi.ttpai.cn/v1.0/user/access?appid=10003&mobile=13248010486";
+		HttpUtil.post(url);
+	}
+	
+	static void pubapiSendMessage(){
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("user", "aaa");
+		params.put("passwd", "bbb");
+		params.put("templateId","26");
+		params.put("appid", "10003");
+//		params.put("phone","13811112222");
+		String url = "http://localhost/v1.0/messageCenter/sendMessage";
+		HttpUtil.post(url, params);
+		
+	}
+	
+	static void dealerapp4010(){
+		String header = AppRequest.buildHeaderEn("4010");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("dealerId", 288378);
+		map.put("type", 2);
+		String info = AppRequest.buildInfoEn(map);
+		String url = "http://localhost/ttpBidHallController";
+		String result = HttpUtil.postInfoHeader(url,header,info,null);
+		result = unWrappedData(result);
+		System.out.println("decode result:"+result);
 	}
 	
 	static void dealer(){
@@ -115,8 +128,8 @@ public class HttpTest {
 //		String url = "http://localhost/v1.0/mobile/getLatestVersion?appid=10014&info=";
 		JSONObject jo = new JSONObject();
 //		jo.put("type", "android_boss");
-		jo.put("type", "android_checker_new");
-		jo.put("version", "2.3.4");
+		jo.put("type", "android_bid_hall");
+//		jo.put("version", "1.0.0");
 		url += encodeUrl(jo.toJSONString());
 		System.out.println(url);
 		HttpUtil.get(url);

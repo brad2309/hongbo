@@ -1,35 +1,32 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-        <groupId>com.ttpai</groupId>
-        <artifactId>ttpai_parent</artifactId>
-        <version>1.1</version>
-    </parent>
+  <groupId>hongbo</groupId>
   <artifactId>hongbo</artifactId>
   <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
-  <repositories>
-        <repository>
-            <id>snapshotsId</id>
-            <name>snapshots</name>
-            <url>http://172.16.2.101:8081/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>thirdpartyId</id>
-            <name>thirdparty</name>
-            <url>http://172.16.2.101:8081/nexus/content/repositories/thirdparty/</url>
-        </repository>
-        <repository>
-            <id>releasesId</id>
-            <name>releases</name>
-            <url>http://172.16.2.101:8081/nexus/content/repositories/releases/</url>
-        </repository>
-    </repositories>
+<!--   <repositories> -->
+<!--         <repository> -->
+<!--             <id>snapshotsId</id> -->
+<!--             <name>snapshots</name> -->
+<!--             <url>http://172.16.2.101:8081/nexus/content/repositories/snapshots/</url> -->
+<!--         </repository> -->
+<!--         <repository> -->
+<!--             <id>thirdpartyId</id> -->
+<!--             <name>thirdparty</name> -->
+<!--             <url>http://172.16.2.101:8081/nexus/content/repositories/thirdparty/</url> -->
+<!--         </repository> -->
+<!--         <repository> -->
+<!--             <id>releasesId</id> -->
+<!--             <name>releases</name> -->
+<!--             <url>http://172.16.2.101:8081/nexus/content/repositories/releases/</url> -->
+<!--         </repository> -->
+<!--     </repositories> -->
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <artifactId>junit</artifactId>  
+		<version>4.9</version>  
       <scope>test</scope>
     </dependency>
     
@@ -41,22 +38,51 @@
         <!-- fastjson -->
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
+            <artifactId>fastjson</artifactId>  
+		    <version>1.2.0</version>  
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <artifactId>mysql-connector-java</artifactId>  
+		    <version>5.1.25</version>  
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.4</version>
         </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.3.2</version>
+        </dependency>
 		<dependency>  
 		    <groupId>org.ow2.asm</groupId>  
 		    <artifactId>asm-all</artifactId>  
 		    <version>5.1</version>  
 		</dependency> 
+		
+		<!-- hbase -->
+		<dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-hadoop</artifactId>
+            <version>2.2.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-client</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-common</artifactId>
+            <version>1.2.0</version>
+        </dependency>
   </dependencies>
   <build>
     <finalName>hongbo</finalName>

@@ -40,7 +40,7 @@ public class JDBC2VO {
         String dbname = "ttpai_boss_v1";//数据名
         String basePath = "D:\\" + dbname + "\\";//保存路径
     	jv.buildDaoFile(basePath, packageNameDao, packageNameModel);
-    	jv.buildModelFile(basePath, packageNameModel);
+//    	jv.buildModelFile(basePath, packageNameModel);
 	}
 
     /**
@@ -325,7 +325,7 @@ public class JDBC2VO {
 
         ResultSet tableSet = conn
                 .prepareStatement(
-                        "SELECT TABLE_NAME, TABLE_COMMENT FROM information_schema.tables WHERE table_name='BOSS_COMPLAINT_MOBILE_PIC' and TABLE_SCHEMA='"
+                        "SELECT TABLE_NAME, TABLE_COMMENT FROM information_schema.tables WHERE table_name='BOSS_INVITATION_JOIN_BUICK' and TABLE_SCHEMA='"
                                 + dbname + "'").executeQuery();
 
         while (tableSet.next()) {

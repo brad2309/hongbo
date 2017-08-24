@@ -27,6 +27,9 @@ public class HttpUtil {
 	public static String post(String url,Map<String, String> params){
 		return post(url, params, null);
 	}
+	public static String post(String url){
+		return post(url, null, null);
+	}
 	
 	public static String post(String url,Map<String, String> params,Map<String, String> header) {
 		try{
