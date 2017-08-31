@@ -31,8 +31,9 @@ public class HttpTest {
 //		logappAdd();
 //		handlerReferer();
 //		testCustomerApi();
-		pubapi1001();
+//		pubapi1001();
 //		dealer();
+		customer();
 //		boss();
 //		pubapi1003();
 //		pubapiSendMessage();
@@ -78,10 +79,20 @@ public class HttpTest {
 	static void boss(){
 		String header = wrapperData(AppRequest.header1001);
 		String info = wrapperData(AppRequest.ttp1001);
-		String url = "http://api.ttpai.cn/bossapp";
+		String url = "https://api.ttpai.cn/bossapp";
 		String host = "bossapp.ttpai.cn";
 		String result = HttpUtil.postInfoHeader(url,header,info,host);
 		System.out.println("----------------------");
+		result = unWrappedData(result);
+		System.out.println("decode result:"+result);
+	}
+	static void customer(){
+		String header = wrapperData(AppRequest.header1001);
+		String info = wrapperData(AppRequest.ttp1001);
+		String url = "https://api.ttpai.cn/app";
+//		url = "http://localhost/app";
+		String host = "customer.app.ttpai.cn";
+		String result = HttpUtil.postInfoHeader(url,header,info,host);
 		result = unWrappedData(result);
 		System.out.println("decode result:"+result);
 	}

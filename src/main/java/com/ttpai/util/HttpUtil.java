@@ -1,18 +1,25 @@
 package com.ttpai.util;
 
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -22,7 +29,8 @@ public class HttpUtil {
 	public static final String CHARSET = "UTF-8";
 
 	static RequestConfig config = RequestConfig.custom().setConnectTimeout(60000).setSocketTimeout(60000).build();
-	static CloseableHttpClient hc = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+	static HttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+	static HttpClient httpsClient = createHttpsClient();
 	
 	public static String post(String url,Map<String, String> params){
 		return post(url, params, null);
@@ -48,7 +56,15 @@ public class HttpUtil {
 					httpPost.addHeader(key, header.get(key));
 				}
 			}
-			CloseableHttpResponse response = hc.execute(httpPost);
+			HttpClient client;
+			if(url.startsWith("http://")){
+				client = httpClient;
+			}else if(url.startsWith("https://")){
+				client = httpsClient;
+			}else{
+				throw new RuntimeException();
+			}
+			HttpResponse response = client.execute(httpPost);
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != 200) {
 	            httpPost.abort();
@@ -60,7 +76,6 @@ public class HttpUtil {
 	            result = EntityUtils.toString(entity, CHARSET);
 	        }
 	        EntityUtils.consume(entity);
-	        response.close();
 	        System.out.println("result:"+result);
 	        return result;
 		}catch (Exception e) {
@@ -72,7 +87,7 @@ public class HttpUtil {
 	public static String get(String url) {
 		try{
 			HttpGet httpGet = new HttpGet(url);
-			CloseableHttpResponse response = hc.execute(httpGet);
+			HttpResponse response = httpClient.execute(httpGet);
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != 200) {
 				httpGet.abort();
@@ -84,7 +99,6 @@ public class HttpUtil {
 	            result = EntityUtils.toString(entity, CHARSET);
 	        }
 	        EntityUtils.consume(entity);
-	        response.close();
 	        System.out.println("result:"+result);
 	        return result;
 		}catch (Exception e) {
@@ -113,5 +127,22 @@ public class HttpUtil {
 		return post(url, p, h);
 	}
 	
+	public static HttpClient createHttpsClient() {
+		try {
+			SSLContext ctx = SSLContext.getInstance("TLSv1.2");
+			ctx.init(null, new TrustManager[] { new TrustAnyTrustManager() },null);
+			SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(ctx,SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+			HttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(config).setSSLSocketFactory(socketFactory).build();
+			return httpClient;
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
+	}
+	
+	private static class TrustAnyTrustManager implements X509TrustManager {
+		public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
+		public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
+        public X509Certificate[] getAcceptedIssuers() {return new X509Certificate[] {};}
+	}
 
 }
