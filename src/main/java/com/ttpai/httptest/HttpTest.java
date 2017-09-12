@@ -7,45 +7,48 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.time.DateFormatUtils;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ttpai.hongbo.test.DESUtil;
+import com.ttpai.util.DateFormatUtil;
 import com.ttpai.util.HttpUtil;
+import com.ttpai.util.MyJsonObject;
 
 
 public class HttpTest {
 	
-	public static final String DES_KEY = "cxtsc@51";
-	public static final String CHARSET = "UTF-8";
+	public final String DES_KEY = "cxtsc@51";
+	public final String CHARSET = "UTF-8";
+	public static String API_HOST = "https://api.ttpai.cn/";
+	public static String PUBAPI_HOST = "http://pubapi.ttpai.cn/v1.0/";
+	static{
+//		API_HOST = "http://localhost/";
+//		PUBAPI_HOST = "http://localhost/v1.0/";
+	}
 
-	static RequestConfig config = RequestConfig.custom().setConnectTimeout(60000).setSocketTimeout(60000).build();
-	static CloseableHttpClient hc = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
-
-	public static void main(String[] args) throws Exception{
-//		testCheckerApi();
+	void doTest(){
 //		pubapi1002();
 //		logappAdd();
 //		handlerReferer();
-//		testCustomerApi();
 //		pubapi1001();
-//		dealer();
-		customer();
-//		boss();
-//		pubapi1003();
+//		customerLoginWithHeader();
+//		customerLoginNoHeader();
 //		pubapiSendMessage();
+//		versionWithHeader();
+		customer1012();
 //		test();
 	}
+	public static void main(String[] args) throws Exception{
+		new HttpTest().doTest();
+	}
 	
-	static void test(){
-		String url = "http://pubapi.ttpai.cn/v1.0/user/access?appid=10003&mobile=13248010486";
+	void test(){
+		String url = PUBAPI_HOST+"dept/checker?appid=10003";
+//		url = "http://pubapi.ttpai.cn/v1.0/maintenance/data/updateAdmin?appid=10003";
 		HttpUtil.post(url);
 	}
 	
-	static void pubapiSendMessage(){
+	void pubapiSendMessage(){
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("user", "aaa");
 		params.put("passwd", "bbb");
@@ -57,7 +60,7 @@ public class HttpTest {
 		
 	}
 	
-	static void dealerapp4010(){
+	void dealerapp4010(){
 		String header = AppRequest.buildHeaderEn("4010");
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("dealerId", 288378);
@@ -69,74 +72,69 @@ public class HttpTest {
 		System.out.println("decode result:"+result);
 	}
 	
-	static void dealer(){
-		Map<String,String> params = new HashMap<String,String>();
-		Map<String,String> header = new HashMap<String,String>();
-		header.put("host", "checker.ttpai.cn");
-		String url = "http://api.ttpai.cn/checkerServlet";
-		HttpUtil.post(url, params, header);
-	}
-	static void boss(){
-		String header = wrapperData(AppRequest.header1001);
-		String info = wrapperData(AppRequest.ttp1001);
-		String url = "https://api.ttpai.cn/bossapp";
-		String host = "bossapp.ttpai.cn";
-		String result = HttpUtil.postInfoHeader(url,header,info,host);
-		System.out.println("----------------------");
-		result = unWrappedData(result);
-		System.out.println("decode result:"+result);
-	}
-	static void customer(){
-		String header = wrapperData(AppRequest.header1001);
-		String info = wrapperData(AppRequest.ttp1001);
-		String url = "https://api.ttpai.cn/app";
-//		url = "http://localhost/app";
-		String host = "customer.app.ttpai.cn";
-		String result = HttpUtil.postInfoHeader(url,header,info,host);
-		result = unWrappedData(result);
-		System.out.println("decode result:"+result);
+	void versionWithHeader(){
+		//customer.app.ttpai.cn
+		//bossapp.ttpai.cn
+		//checker.ttpai.cn
+		String url = API_HOST+"app",host = "customer.app.ttpai.cn";
+		MyJsonObject b = new MyJsonObject().set("type", "android_checker_ttp").set("version", "2.5.6").set("isdebug", 1);
+		MyJsonObject h = new MyJsonObject().set("version", "2.0.0").set("service", 100001).set("deviceType", "iphone_ttp_personal").set("timestamp", 1504751469397L).set("uuUserId", "222").setSign(b.getObj());
+		String result = HttpUtil.postInfoHeader(url, wrapperData(h.toJsonString()), wrapperData(b.toJsonString()), host);
+		System.out.println(unWrappedData(result));
 	}
 	
-	static void handlerReferer(){
+	void customerLoginWithHeader(){
+		String url = API_HOST+"app",host = "customer.app.ttpai.cn";
+		MyJsonObject b = new MyJsonObject().set("mobile", "18621668065").set("vcode", "123456");
+		MyJsonObject h = new MyJsonObject().set("version", "2.0.0").set("service", 1007).set("deviceType", "iphone_ttp_personal").set("timestamp", 1504751469397L).set("uuUserId", "222").setSign(b.getObj());
+		String result = HttpUtil.postInfoHeader(url, wrapperData(h.toJsonString()), wrapperData(b.toJsonString()), host);
+		System.out.println(unWrappedData(result));
+	}
+	void customerLoginNoHeader(){
+		String url =  API_HOST+"app",host = "customer.app.ttpai.cn";
+		MyJsonObject b = new MyJsonObject().set("mobile", "18621668065").set("vcode", "123456");
+		MyJsonObject h = new MyJsonObject().set("version", "2.0.8").set("service", 1007).set("deviceType", "iphone_ttp_personal").set("timestamp", 1504751469397L).set("uuUserId", "222").setSign(b.getObj());
+		MyJsonObject param = new MyJsonObject();
+		param.set("header", h.getObj());
+		param.set("body", b.getObj());
+		String result = HttpUtil.postInfoHeader(url, null, wrapperData(param.toJsonString()), host);
+		System.out.println(unWrappedData(result));
+	}
+	void customer1012(){
+		String url =  API_HOST+"app",host = "customer.app.ttpai.cn";
+		MyJsonObject b = new MyJsonObject();
+		MyJsonObject h = new MyJsonObject().set("version", "2.0.8").set("service", 1012).set("deviceType", "iphone_ttp_personal")
+				.set("timestamp", 1504770254107L).set("uuUserId", "174e6e5a96dd345c6b0c2108f8f1f40a49fd7cba").setSign(b.getObj());
+		String result = HttpUtil.postInfoHeader(url, wrapperData(h.toJsonString()), wrapperData(b.toJsonString()), host);
+		System.out.println(unWrappedData(result));
+	}
+	
+	void handlerReferer(){
 		Map<String,String> map = new HashMap<String, String>();
 		map.put("referer", "https://servicewechat.com/122/1.2.3/page-frame.html");
 		map.put("host", "wxapp.ttpai.cn");
-		String url = "http://api.ttpai.cn/wxminiapp/handlerReferer";
+		String url = API_HOST+"wxminiapp/handlerReferer";
 		HttpUtil.post(url, null, map);
 	}
 	
-	static void logappAdd(){
-//		String url = "http://localhost/logapp/logappapi/add";
-		String url = "http://api.ttpai.cn/logappapi/add";
-		JSONObject jo = new JSONObject();
-		jo.put("app", "checker");
-		jo.put("type", "Android");
-		jo.put("version", "2.5.8");
-		jo.put("isServer", "0");
-		jo.put("content", "测试日志----"+DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("info", jo.toJSONString());
-		Map<String, String> header = new HashMap<String, String>();
-		header.put("host", "logapp.ttpai.cn");
-		HttpUtil.post(url, map,header);
+	void logappAdd(){
+		String url = API_HOST+"logappapi/add";
+		MyJsonObject b = new MyJsonObject().set("app", "checker").set("type", "Android").set("version", "2.5.8").set("isServer", "0")
+				.set("content", "测试日志----"+DateFormatUtil.format(new Date()));
+		HttpUtil.postInfoHeader(url, null, b.toJsonString(), "logapp.ttpai.cn");
 	}
 	
-	static void pubapi1002(){
-		String url = "http://pubapi.ttpai.cn/v1.0/mobile/synUserDeviceTokens?appid=10014&info=";
-		JSONObject jo = new JSONObject();
-		jo.put("appProductType", 1);
-		jo.put("deviceTokens", "AkGQCmdM1FtE8lBJzfhKkZ3RyIexSkacfu7EoBR74X5q");
-		jo.put("mobileType", 0);
-		jo.put("remark", "1.0.0");
-		jo.put("userId", 753);
-		url += jo.toJSONString();
-		System.out.println(url);
+	void pubapi1002(){
+		String url = PUBAPI_HOST+"mobile/synUserDeviceTokens?appid=10014&info=";
+		MyJsonObject b = new MyJsonObject().set("appProductType", 1).set("deviceTokens", "AkGQCmdM1FtE8lBJzfhKkZ3RyIexSkacfu7EoBR74X5q")
+				.set("mobileType", 0).set("remark", "1.0.0").set("userId", 753);
+		url += b.toJsonString();
 		HttpUtil.get(url);
 	}
 	
-	static void pubapi1001(){
-		String url = "http://pubapi.ttpai.cn/v1.0/mobile/getLatestVersion?appid=10014&info=";
-//		String url = "http://localhost/v1.0/mobile/getLatestVersion?appid=10014&info=";
+	void pubapi1001(){
+		String url = PUBAPI_HOST+"mobile/getLatestVersion?appid=10014&info=";
+//		url = "http://localhost/v1.0/mobile/getLatestVersion?appid=10014&info=";
 		JSONObject jo = new JSONObject();
 //		jo.put("type", "android_boss");
 		jo.put("type", "android_bid_hall");
@@ -147,40 +145,19 @@ public class HttpTest {
 	}
 	
 	/**pai调用pubapi登录*/
-	public static void paiLogin() throws Exception{
+	public void paiLogin() throws Exception{
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("mobile", "15044444444") ;
 		params.put("password", "123456") ;
 		params.put("source_ip", "1270.0.1") ;//访问IP
 		params.put("source", "www") ;//访问来源
 		params.put("uuid", "uuid") ;//前端唯一标识
-		String url = "http://localhost/pubapi/v1.0/user/login?appid=10000";
-		String res = HttpUtil.post(url,params,null);
-		System.out.println("-----------"+res);
+		MyJsonObject b = new MyJsonObject().set("mobile", "").set("password", "123456").set("source_ip", "127.0.0.1").set("source", "www").set("uuid", "uuid1");
+		String url = PUBAPI_HOST+"user/login?appid=10000";
+		HttpUtil.post(url,b.getObj());
 	}
-	
-	/**调用checker api新格式接口100001*/
-	public static void testCheckerApi() throws Exception{
-		String header = wrapperData(AppRequest.header1001);
-		String info = wrapperData(AppRequest.ttp1001);
-		String url = "http://localhost/checkerServlet";
-		String host = null;
-		String result = HttpUtil.postInfoHeader(url,header,info,host);
-		result = unWrappedData(result);
-		System.out.println("decode result:"+result);
-	}
-	/**调用customer api新格式接口100001*/
-	public static void testCustomerApi() throws Exception{
-		String header = wrapperData(AppRequest.header1001);
-		String info = wrapperData(AppRequest.ttp1001);
-		String url = "http://localhost/app";
-		String host = null;
-		String result = HttpUtil.postInfoHeader(url,header,info,host);
-		result = unWrappedData(result);
-		System.out.println("decode result:"+result);
-	}
-	
-	static String encodeUrl(String s){
+		
+	private String encodeUrl(String s){
 		try {
 			return URLEncoder.encode(s, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
@@ -189,7 +166,7 @@ public class HttpTest {
 		}
 	}
 	
-	private static String unWrappedData(String str) {
+	private String unWrappedData(String str) {
 		try{
 			return DESUtil.decryptDESwithBase64(str, DES_KEY);
 		}catch (Exception e) {
@@ -198,7 +175,7 @@ public class HttpTest {
 		}
 	}
 
-	private static String wrapperData(String str) {
+	private String wrapperData(String str) {
 		try{
 			return DESUtil.encryptDESwithBase64(str, DES_KEY);
 		}catch (Exception e) {
@@ -207,7 +184,7 @@ public class HttpTest {
 		}
 	}
 	
-	public static String encodeBase64(String result) {
+	public String encodeBase64(String result) {
 		try{
 			return new String(Base64.encodeBase64(result.getBytes("UTF-8")), "UTF-8");
 		}catch (Exception e) {
@@ -216,7 +193,7 @@ public class HttpTest {
 		}
     }
 
-    public static String decodeBase64(String result) {
+    public String decodeBase64(String result) {
         try{
         	return new String(Base64.decodeBase64(result.getBytes("UTF-8")), "UTF-8");
 		}catch (Exception e) {

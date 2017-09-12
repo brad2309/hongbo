@@ -24,6 +24,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import com.alibaba.fastjson.JSONObject;
+
 public class HttpUtil {
 	
 	public static final String CHARSET = "UTF-8";
@@ -34,6 +36,16 @@ public class HttpUtil {
 	
 	public static String post(String url,Map<String, String> params){
 		return post(url, params, null);
+	}
+	public static String post(String url,JSONObject params){
+		if(params==null){
+			return post(url,null,null);
+		}
+		Map<String, String> map = new HashMap<String, String>();
+		for(String key:params.keySet()){
+			map.put(key, params.getString(key));
+		}
+		return post(url, map, null);
 	}
 	public static String post(String url){
 		return post(url, null, null);
