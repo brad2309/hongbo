@@ -325,7 +325,7 @@ public class JDBC2VO {
 
         ResultSet tableSet = conn
                 .prepareStatement(
-                        "SELECT TABLE_NAME, TABLE_COMMENT FROM information_schema.tables WHERE table_name='BOSS_INVITATION_JOIN_BUICK' and TABLE_SCHEMA='"
+                        "SELECT TABLE_NAME, TABLE_COMMENT FROM information_schema.tables WHERE table_name='BOSS_INVITATION_GROUP_ACCOUNT' and TABLE_SCHEMA='"
                                 + dbname + "'").executeQuery();
 
         while (tableSet.next()) {

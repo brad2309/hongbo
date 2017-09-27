@@ -18,19 +18,21 @@ public class Import2Sql {
 
 	public static void main(String[] args) throws Exception{
 		Import2Sql imp = new Import2Sql();
-		imp.test1("E:\\ttpai\\201708\\daoru\\Noname1.txt");
-		imp.test1("E:\\ttpai\\201708\\daoru\\Noname2.txt");
-		imp.test1("E:\\ttpai\\201708\\daoru\\Noname3.txt");
-		imp.test1("E:\\ttpai\\201708\\daoru\\Noname4.txt");
-		imp.test1("E:\\ttpai\\201708\\daoru\\Noname5.txt");
-		imp.test1("E:\\ttpai\\201708\\daoru\\Noname6.txt");
+		imp.test1("E:\\ttpai\\201709\\daoru\\Noname1.txt");
+		imp.test1("E:\\ttpai\\201709\\daoru\\Noname2.txt");
+		imp.test1("E:\\ttpai\\201709\\daoru\\Noname3.txt");
+		imp.test1("E:\\ttpai\\201709\\daoru\\Noname4.txt");
+		imp.test1("E:\\ttpai\\201709\\daoru\\Noname5.txt");
+		imp.test1("E:\\ttpai\\201709\\daoru\\Noname6.txt");
+		imp.test1("E:\\ttpai\\201709\\daoru\\Noname7.txt");
+		
 	}
 	
 	void test1(String filename) throws Exception{
 		List<String> lines = FileUtils.readLines(new File(filename));
 		List<BossComplaintVO> list = new ArrayList<BossComplaintVO>();
 		for(int i=0;i<lines.size();i++){
-			if(i<3){
+			if(i<1){
 				continue;
 			}
 			String line = lines.get(i);
@@ -75,6 +77,9 @@ public class Import2Sql {
 		String s5 = arr[5];
 		comp.setCustomerType(ComplaintCustomerType.getIdByName(s5));
 		comp.setPhone(arr[6]);
+		if(comp.getPhone().contains("/")){
+			throw new RuntimeException(comp.getCreateTimeText()+","+comp.getAuctionId());
+		}
 		comp.setComplaintType(ComplaintType.getIdByName(arr[7]));
 		comp.setContent(arr[8]);
 		comp.setCompLevel(ComplaintLevel.getIdByName(arr[9]));
@@ -84,8 +89,8 @@ public class Import2Sql {
 		comp.setHandlerUserName(s10);
 		comp.setHandlerUserId(getUserIdByName(s10));
 		
-		comp.setCompStatus(25);
-		res.setResultStatus(0);
+		comp.setCompStatus(20);
+		res.setResultStatus(null);
 		if(arr.length<=12){
 			return;
 		}
@@ -102,12 +107,16 @@ public class Import2Sql {
 			return;
 		}
 		res.setDepartResult(arr[15]);
-		res.setComplaintResult(arr[16]);
+		String cr = arr[16];
+		if(cr.length()>300){
+			cr = cr.substring(0,300);
+		}
+		res.setComplaintResult(cr);
 		if(arr.length==17){
 			return;
 		}
-		res.setResultStatus("是".equals(arr[17])?1:0);
-		if(res.getResultStatus()==1){
+		res.setResultStatus("是".equals(arr[17])?2:null);
+		if(res.getResultStatus()!=null&&res.getResultStatus()==2){
 			comp.setCompStatus(30);
 		}
 	}
@@ -131,6 +140,8 @@ public class Import2Sql {
 			return 2068;
 		}else if("邱伟".equals(name)){
 			return 125;
+		}else if("-".equals(name)){
+			return null;
 		}
 		throw new RuntimeException(name+"error");
 	}

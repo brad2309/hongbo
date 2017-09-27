@@ -69,6 +69,9 @@ public class ComplaintConstant {
 			this.value = value;
 		}
 		public static int getIdByName(String value){
+			if(StringUtils.isBlank(value)){
+				return 1;
+			}
 			for(ComplaintLevel e:ComplaintLevel.values()){
 				if(value.equals(e.value)){
 					return e.id;
@@ -202,6 +205,7 @@ public class ComplaintConstant {
 	public enum ComplaintHasDuty{
 
 		YES(1,"有"),
+		YES2(1,"是"),
 		NO(0,"无");
 		public int id;
 		public String value;
@@ -210,6 +214,7 @@ public class ComplaintConstant {
 			this.value = value;
 		}
 		public static Integer getIdByName(String value){
+			value = value.trim();
 			for(ComplaintHasDuty e:ComplaintHasDuty.values()){
 				if(value.equals(e.value)){
 					return e.id;
@@ -242,6 +247,7 @@ public class ComplaintConstant {
 		MENDIAN(4,"门店责任"),
 		MENDIAN2(4,"门店接待"),
 		SHANGHAI_SHOUHOU_ZHONGXIN(5,"上海售后中心责任"),
+		SHANGHAI_SHOUHOU_ZHONGXIN2(5,"售后中心"),
 		BANZHENG_SHANG(6,"办证商责任"),
 		SHANGJIA(7,"上家责任"),
 		SHANGJIA2(7,"上家"),
@@ -252,6 +258,12 @@ public class ComplaintConstant {
 		QITA5(9,"售后"),
 		QITA6(9,"供应商"),
 		QITA7(9,"车管所"),
+		QITA8(9,"车管所验车人、门店接待、车主"),
+		QITA9(9,"财务"),
+		QITA10(9,"快至"),
+		QITA11(9,"技术中心"),
+		QITA12(9,"售后、商拓"),
+		QITA13(9,"商拓"),
 		XIAJIA2(8,"下家"),
 		XIAJIA3(8,"下家违约"),
 		XIAJIA(8,"下家责任");
@@ -270,7 +282,7 @@ public class ComplaintConstant {
 			if(StringUtils.isBlank(value)){
 				return null;
 			}
-			throw new RuntimeException(value+" error.");
+			throw new RuntimeException("----"+value+"---error.");
 		}
 		public static String getValue(Integer id){
 			if(id!=null){

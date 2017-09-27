@@ -52,6 +52,14 @@ public class HttpUtil {
 	}
 	
 	public static String post(String url,Map<String, String> params,Map<String, String> header) {
+		HttpClient client;
+		if(url.startsWith("http://")){
+			client = httpClient;
+		}else if(url.startsWith("https://")){
+			client = httpsClient;
+		}else{
+			throw new RuntimeException();
+		}
 		try{
 			List<NameValuePair> parameters = new ArrayList<NameValuePair>();
 			if(params!=null){
@@ -68,14 +76,6 @@ public class HttpUtil {
 					httpPost.addHeader(key, header.get(key));
 				}
 			}
-			HttpClient client;
-			if(url.startsWith("http://")){
-				client = httpClient;
-			}else if(url.startsWith("https://")){
-				client = httpsClient;
-			}else{
-				throw new RuntimeException();
-			}
 			HttpResponse response = client.execute(httpPost);
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != 200) {
@@ -91,14 +91,25 @@ public class HttpUtil {
 	        System.out.println("result:"+result);
 	        return result;
 		}catch (Exception e) {
-			e.printStackTrace();
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 	
-	public static String get(String url) {
+	public static String get(String url,Map<String, String> params,Map<String, String> header) {
+		if(params!=null){
+			url += "?";
+			for(String key:params.keySet()){
+				url += key+"="+params.get(key)+"&";
+			}
+			System.out.println("url:"+url);
+		}
 		try{
 			HttpGet httpGet = new HttpGet(url);
+			if(header!=null){
+				for(String key:header.keySet()){
+					httpGet.addHeader(key, header.get(key));
+				}
+			}
 			HttpResponse response = httpClient.execute(httpGet);
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != 200) {
@@ -114,26 +125,24 @@ public class HttpUtil {
 	        System.out.println("result:"+result);
 	        return result;
 		}catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return null;
+	}
+	
+	public static String get(String url) {
+		return get(url,null,null);
 	}
 	
 	public static String get(String url,Map<String, String> params) {
-		if(params!=null){
-			url += "?";
-			for(String key:params.keySet()){
-				url += key+"="+params.get(key)+"&";
-			}
-			System.out.println("url:"+url);
-		}
-		return get(url);
+		return get(url,params,null);
 	}
 	
 	public static String postInfoHeader(String url,String header,String info,String host) {
 		Map<String, String> h = new HashMap<String, String>();
 		h.put("ttp", header);
-		h.put("host", host);
+		if(host!=null){
+			h.put("host", host);
+		}
 		Map<String, String> p = new HashMap<String, String>();
 		p.put("info", info);
 		return post(url, p, h);
