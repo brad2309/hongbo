@@ -3,12 +3,9 @@ package com.ttpai.httptest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 
-import com.alibaba.fastjson.JSONObject;
 import com.ttpai.hongbo.test.DESUtil;
 import com.ttpai.util.DateFormatUtil;
 import com.ttpai.util.HttpUtil;
@@ -22,8 +19,8 @@ public class HttpTest {
 	public static String API_HOST = "https://api.ttpai.cn/";
 	public static String PUBAPI_HOST = "http://pubapi.ttpai.cn/v1.0/";
 	static{
-//		API_HOST = "http://localhost/";
-//		PUBAPI_HOST = "http://localhost/v1.0/";
+		API_HOST = "http://localhost/";
+		PUBAPI_HOST = "http://localhost/v1.0/";
 	}
 
 	void doTest(){
@@ -38,32 +35,28 @@ public class HttpTest {
 //		customer1017();
 //		customer1022();
 //		customer1013();
-		test();
+//		test();
 //		syncTocken100002();
 //		customer1004();
 //		mobile1002();
 //		mobile1001();
 //		customer1010();
+//		paiList();
+		dealer4002();
 	}
 	public static void main(String[] args) throws Exception{
 		new HttpTest().doTest();
 	}
 	
 	void test(){
-		String url = PUBAPI_HOST+"pai/hall/market?appid=10003&status=1";
+		String url = PUBAPI_HOST+"pai/hall/group?appid=10003&status=1";
 		HttpUtil.post(url);
 	}
 	
-	void pubapiSendMessage(){
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("user", "aaa");
-		params.put("passwd", "bbb");
-		params.put("templateId","26");
-		params.put("appid", "10003");
-//		params.put("phone","13811112222");
-		String url = "http://localhost/v1.0/messageCenter/sendMessage";
-		HttpUtil.post(url, params);
-		
+	void paiList(){
+		String url = PUBAPI_HOST+"pai/hall/list?appid=10000";
+		MyJson p = MyJson.create().set("status", 0).set("order", "registration").set("order_type", "desc");//set("dealerId", "1").set("page_size", 200);//.set("regiser_address", "沪").set("zone_id", "2").set("age", "3-6").set("brand", "宝马");
+		HttpUtil.post(url,p);
 	}
 	
 	void lastVersion100001(){
@@ -73,14 +66,14 @@ public class HttpTest {
 		//checker.ttpai.cn
 		String url = API_HOST+"app",host = "customer.app.ttpai.cn";
 		MyJson b = MyJson.create().set("type", "android_checker_ttp").set("version", "2.5.6").set("isdebug", 1);
-		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 100001).set("deviceType", "zzz").set("timestamp", 1504751469397L).set("uuUserId", "1").setSign(b.getObj());
+		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 100001).set("deviceType", "zzz").set("timestamp", 1504751469397L).set("uuUserId", "1").setSign(b);
 		String result = HttpUtil.postInfoHeader(url, wrapperData(h.toJsonString()), wrapperData(b.toJsonString()), host);
 		System.out.println(unWrappedData(result));
 	}
 	void syncTocken100002(){
 		String url =  API_HOST+"app",host = "customer.app.ttpai.cn";
 		MyJson b = MyJson.create().set("mobileType", "1").set("remark","2.0.6").set("appProductType", "3").set("userId", "").set("deviceTokens", "222");
-		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 100002).set("deviceType", "zzz").set("timestamp", 1504770254107L).set("uuUserId", "1").setSign(b.getObj());
+		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 100002).set("deviceType", "zzz").set("timestamp", 1L).set("uuUserId", "1").setSign(b);
 		String result = HttpUtil.postInfoHeader(url, wrapperData(h.toJsonString()), wrapperData(b.toJsonString()), host);
 		System.out.println(unWrappedData(result));
 	}
@@ -88,7 +81,7 @@ public class HttpTest {
 	void customerLogin(){
 		String url = API_HOST+"app",host = "customer.app.ttpai.cn";
 		MyJson b = MyJson.create().set("mobile", "18621668065").set("vcode", "123456");
-		MyJson h = MyJson.create().set("version", "2.0.0").set("service", 1007).set("deviceType", "zzz").set("timestamp", 1504751469397L).set("uuUserId", "1").setSign(b.getObj());
+		MyJson h = MyJson.create().set("version", "2.0.0").set("service", 1007).set("deviceType", "zzz").set("timestamp", 1504751469397L).set("uuUserId", "1").setSign(b);
 		String result = HttpUtil.postInfoHeader(url, wrapperData(h.toJsonString()), wrapperData(b.toJsonString()), host);
 		System.out.println(unWrappedData(result));
 	}
@@ -96,7 +89,7 @@ public class HttpTest {
 	void customer1012(){
 		String url =  API_HOST+"app",host = "customer.app.ttpai.cn";
 		MyJson b = MyJson.create();
-		MyJson h = MyJson.create().set("version", "2.0.5").set("service", 1012).set("deviceType", "zzz").set("timestamp", 1504770254107L).set("uuUserId", "1").setSign(b.getObj());
+		MyJson h = MyJson.create().set("version", "2.0.5").set("service", 1012).set("deviceType", "zzz").set("timestamp", 1L).set("uuUserId", "1").setSign(b);
 		String result = HttpUtil.postInfoHeader(url, wrapperData(h.toJsonString()), wrapperData(b.toJsonString()), host);
 		System.out.println(unWrappedData(result));
 		MyJson param = MyJson.create().set("header", h.getObj()).set("body", b.getObj());
@@ -106,14 +99,21 @@ public class HttpTest {
 	void customer1013(){
 		String url =  API_HOST+"app",host = "customer.app.ttpai.cn";
 		MyJson b = MyJson.create();
-		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 1013).set("deviceType", "zzz").set("timestamp", 1504770254107L).set("uuUserId", "1").setSign(b.getObj());
+		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 1013).set("deviceType", "zzz").set("timestamp", 1L).set("uuUserId", "1").setSign(b);
+		String result = HttpUtil.postInfoHeader(url, wrapperData(h.toJsonString()), wrapperData(b.toJsonString()), host);
+		System.out.println(unWrappedData(result));
+	}
+	void dealer4002(){
+		String url =  API_HOST+"ttpBidHallController",host = "dealer.app.ttpai.cn";
+		MyJson b = MyJson.create().set("auctionStatus",2).set("userId", 0);//.set("star", 5);
+		MyJson h = MyJson.create().set("version", "2.4.0").set("service", 4002).set("deviceType", "zzz").set("timestamp", 1L).set("uuUserId", "1").setSign(b);
 		String result = HttpUtil.postInfoHeader(url, wrapperData(h.toJsonString()), wrapperData(b.toJsonString()), host);
 		System.out.println(unWrappedData(result));
 	}
 	void customer1010(){
 		String url =  API_HOST+"app",host = "customer.app.ttpai.cn";
 		MyJson b = MyJson.create();
-		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 1010).set("deviceType", "zzz").set("timestamp", 1504770254107L).set("uuUserId", "1").setSign(b.getObj());
+		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 1010).set("deviceType", "zzz").set("timestamp", 1L).set("uuUserId", "1").setSign(b);
 		String result = HttpUtil.postInfoHeader(url, wrapperData(h.toJsonString()), wrapperData(b.toJsonString()), host);
 		System.out.println(unWrappedData(result));
 		MyJson param = MyJson.create().set("header", h.getObj()).set("body", b.getObj());
@@ -123,7 +123,7 @@ public class HttpTest {
 	void customer1017(){
 		String url =  API_HOST+"app",host = "customer.app.ttpai.cn";
 		MyJson b = MyJson.create().set("city", "");
-		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 1017).set("deviceType", "zzz").set("timestamp", 1504770254107L).set("uuUserId", "1").setSign(b.getObj());
+		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 1017).set("deviceType", "zzz").set("timestamp", 1L).set("uuUserId", "1").setSign(b);
 		String result = HttpUtil.postInfoHeader(url, wrapperData(h.toJsonString()), wrapperData(b.toJsonString()), host);
 		System.out.println(unWrappedData(result));
 //		MyJsonObject param = new MyJsonObject().set("header", h.getObj()).set("body", b.getObj());
@@ -133,26 +133,19 @@ public class HttpTest {
 	void customer1022(){
 		String url =  API_HOST+"app",host = "customer.app.ttpai.cn";
 		MyJson b = MyJson.create().set("brand", "奥迪").set("mobile", "18621888065").set("city", "上海").set("family", "奥迪A4");
-		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 1022).set("deviceType", "zzz").set("timestamp", 1504770254107L).set("uuUserId", "1").setSign(b.getObj());
+		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 1022).set("deviceType", "zzz").set("timestamp", 1L).set("uuUserId", "1").setSign(b);
 		String result = HttpUtil.postInfoHeader(url, wrapperData(h.toJsonString()), wrapperData(b.toJsonString()), host);
 		System.out.println(unWrappedData(result));
 	}
 	void customer1004(){
 		String url =  API_HOST+"app",host = "customer.app.ttpai.cn";
 		MyJson b = MyJson.create().set("mobile", "18621668065");
-		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 1004).set("deviceType", "zzz").set("timestamp", 1504770254107L).set("uuUserId", "1").setSign(b.getObj());
+		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 1004).set("deviceType", "zzz").set("timestamp", 1L).set("uuUserId", "1").setSign(b);
 //		String result = HttpUtil.postInfoHeader(url, wrapperData(h.toJsonString()), wrapperData(b.toJsonString()), host);
 //		System.out.println(unWrappedData(result));
 		MyJson param = MyJson.create().set("header", h.getObj()).set("body", b.getObj());
 		String result = HttpUtil.postInfoHeader(url, null, wrapperData(param.toJsonString()), host);
 		System.out.println(unWrappedData(result));
-	}
-	
-	void handlerReferer(){
-		Map<String,String> map = new HashMap<String, String>();
-		map.put("referer", "https://servicewechat.com/122/1.2.3/page-frame.html");
-		map.put("host", "wxapp.ttpai.cn");
-		HttpUtil.post(API_HOST+"wxminiapp/handlerReferer", null, map);
 	}
 	
 	void logappAdd(){
@@ -172,7 +165,7 @@ public class HttpTest {
 		String url = "http://mobile.ttpai.cn/api/userNew";
 		MyJson b = MyJson.create().set("appProductType", 1).set("deviceTokens", "11")
 				.set("mobileType", 0).set("remark", "1.0.0").set("userId", 6);
-		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 1002).set("deviceType", "zzz").set("timestamp", 1504770254107L).set("uuUserId", "1").setSign(b.getObj());
+		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 1002).set("deviceType", "zzz").set("timestamp", 1L).set("uuUserId", "1").setSign(b);
 		String result = HttpUtil.postInfoHeader(url, encodeBase64(h.toJsonString()), encodeBase64(b.toJsonString()), null);
 		System.out.println(decodeBase64(result));
 	}
@@ -180,18 +173,15 @@ public class HttpTest {
 		String url = "http://mobile.ttpai.cn/version/new";
 //		url = "http://localhost/version/new";
 		MyJson b = MyJson.create().set("type", "android_checker_ttp");
-		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 1002).set("deviceType", "zzz").set("timestamp", 1504770254107L).set("uuUserId", "1").setSign(b.getObj());
+		MyJson h = MyJson.create().set("version", "2.0.8").set("service", 1002).set("deviceType", "zzz").set("timestamp", 1L).set("uuUserId", "1").setSign(b);
 		String result = HttpUtil.postInfoHeader(url, encodeBase64(h.toJsonString()), encodeBase64(b.toJsonString()), null);
 		System.out.println(decodeBase64(result));
 	}
 	
 	void pubapi1001(){
 		String url = PUBAPI_HOST+"mobile/getLatestVersion?appid=10014&info=";
-		JSONObject jo = new JSONObject();
-//		jo.put("type", "android_boss");
-		jo.put("type", "android_bid_hall");
-//		jo.put("version", "1.0.0");
-		url += encodeUrl(jo.toJSONString());
+		MyJson b = MyJson.create().set("type", "android_boss").set("version", "1.0.0");
+		url += encodeUrl(b.toJsonString());
 		HttpUtil.get(url);
 	}
 	

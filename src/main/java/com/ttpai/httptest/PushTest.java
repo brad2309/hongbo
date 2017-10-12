@@ -18,13 +18,13 @@ public class PushTest {
 	 * 
 	 * 1-7经销商 89boss 10消费者
 	 * 经销商表 ttapi_sso.SSO_USERS 消费者表ttapi_www.WWW_USERS
-	 * 1经销商 2boss 3消费者
+	 * 1经销商 2boss 3消费者 4检测师
 	 */
 	public static void main(String[] args) throws Exception{
 		String msg = dealer("6,288378");//6,288378
 		msg = dealer("288378");
 		msg = dealer("6");
-		msg = boss("112,119,252,1168,1048,277,106,203,1085,105,206,153,1318,1317,142,1329,1331,1326,1335,1249,1322,136,1343,288387,1315,752,288389,1325,135,1344,1051,1330,1333,288394,107,1340,1338,1323,1321,1252,1314,1332,176,1342,753,288390,288393,1324,1079,751,1316,1289,1320,1336,193,1334,750,288397,1345,288388");//753
+		msg = customer("1181");
 		String url="http://mobilevc.ttpai.cn/api/push?params="+ URLEncoder.encode(msg, "UTF-8");
 //		url="http://localhost/v1.0/mobile/push?appid=10013&params="+ URLEncoder.encode(msg, "UTF-8");
 		url="http://pubapi.ttpai.cn/v1.0/mobile/push?appid=10013&params="+ URLEncoder.encode(msg, "UTF-8");

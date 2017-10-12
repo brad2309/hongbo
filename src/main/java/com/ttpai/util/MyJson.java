@@ -43,9 +43,9 @@ public class MyJson {
 		return obj.getString(key);
 	}
 
-	public MyJson setSign(JSONObject body) {
+	public MyJson setSign(MyJson body) {
 		StringBuilder str = new StringBuilder();
-		Set<Map.Entry<String, Object>> mapSet = body.entrySet();
+		Set<Map.Entry<String, Object>> mapSet = body.getObj().entrySet();
 		if (mapSet != null && mapSet.size() > 0) {
 			Map<String, Object> paramsMap = new TreeMap<String, Object>();
 			for (Map.Entry<String, Object> entry : mapSet) {

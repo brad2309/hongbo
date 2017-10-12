@@ -30,12 +30,18 @@ public class HttpUtil {
 	
 	public static final String CHARSET = "UTF-8";
 
-	static RequestConfig config = RequestConfig.custom().setConnectTimeout(60000).setSocketTimeout(60000).build();
+	static RequestConfig config = RequestConfig.custom().setConnectTimeout(60000).setSocketTimeout(10*60000).build();
 	static HttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
 	static HttpClient httpsClient = createHttpsClient();
 	
 	public static String post(String url,Map<String, String> params){
 		return post(url, params, null);
+	}
+	public static String post(String url,MyJson params){
+		if(params==null){
+			return post(url,null,null);
+		}
+		return post(url, params.getObj());
 	}
 	public static String post(String url,JSONObject params){
 		if(params==null){

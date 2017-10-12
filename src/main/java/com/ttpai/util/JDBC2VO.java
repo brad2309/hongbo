@@ -34,13 +34,13 @@ public class JDBC2VO {
     }
     
     public static void main(String[] args) throws Exception{
-    	JDBC2VO jv = new JDBC2VO("172.16.2.15", "ttpai_boss_v1", "bossuser", "51auto_v4");
+    	JDBC2VO jv = new JDBC2VO("172.16.2.15", "ttpai_pai", "bossuser", "51auto_v4");
         String packageNameDao = "com.ttpai.boss.aftersale.dao1";//dao包名
         String packageNameModel = "com.ttpai.boss.aftersale.model1";//model包名
         String dbname = "ttpai_boss_v1";//数据名
         String basePath = "D:\\" + dbname + "\\";//保存路径
     	jv.buildDaoFile(basePath, packageNameDao, packageNameModel);
-//    	jv.buildModelFile(basePath, packageNameModel);
+    	jv.buildModelFile(basePath, packageNameModel);
 	}
 
     /**
@@ -248,7 +248,7 @@ public class JDBC2VO {
         // null, "%", new String[]{"TABLE"});
         ResultSet tableSet = conn
                 .prepareStatement(
-                        "SELECT TABLE_NAME, TABLE_COMMENT FROM information_schema.tables WHERE table_name='BOSS_COMPLAINT_MOBILE_PIC' and TABLE_SCHEMA='"
+                        "SELECT TABLE_NAME, TABLE_COMMENT FROM information_schema.tables WHERE table_name='TTP_AUCTION_SEARCH_FIELD' and TABLE_SCHEMA='"
                                 + dbname + "'").executeQuery();
 
         while (tableSet.next()) {
@@ -325,7 +325,7 @@ public class JDBC2VO {
 
         ResultSet tableSet = conn
                 .prepareStatement(
-                        "SELECT TABLE_NAME, TABLE_COMMENT FROM information_schema.tables WHERE table_name='BOSS_INVITATION_GROUP_ACCOUNT' and TABLE_SCHEMA='"
+                        "SELECT TABLE_NAME, TABLE_COMMENT FROM information_schema.tables WHERE table_name='TTP_AUCTION_SEARCH_FIELD' and TABLE_SCHEMA='"
                                 + dbname + "'").executeQuery();
 
         while (tableSet.next()) {
