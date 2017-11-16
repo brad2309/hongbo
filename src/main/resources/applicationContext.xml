@@ -14,6 +14,11 @@
     <context:annotation-config />
     <context:component-scan base-package="com.ttpai">
     </context:component-scan>
+    <bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
 
     <import resource="./hadoop.xml"/>
     
@@ -29,5 +34,6 @@
         </property>
     </bean>
 
+	<import resource="rabbitmq.xml"/>
    
 </beans>

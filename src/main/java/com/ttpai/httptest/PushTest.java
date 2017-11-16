@@ -22,12 +22,12 @@ public class PushTest {
 	 */
 	public static void main(String[] args) throws Exception{
 		String msg = dealer("6,288378");//6,288378
-		msg = dealer("288378");
-		msg = dealer("6");
-		msg = customer("1181");
+		msg = dealer("676811");
+//		msg = dealer("6");
+//		msg = customer("1181");
 		String url="http://mobilevc.ttpai.cn/api/push?params="+ URLEncoder.encode(msg, "UTF-8");
 //		url="http://localhost/v1.0/mobile/push?appid=10013&params="+ URLEncoder.encode(msg, "UTF-8");
-		url="http://pubapi.ttpai.cn/v1.0/mobile/push?appid=10013&params="+ URLEncoder.encode(msg, "UTF-8");
+//		url="http://pubapi.ttpai.cn/v1.0/mobile/push?appid=10013&params="+ URLEncoder.encode(msg, "UTF-8");
 //		url="http://localhost/v1.0/mobile/push?appid=10013&params="+ URLEncoder.encode(msg, "UTF-8");
 		HttpUtil.post(url);
 	}

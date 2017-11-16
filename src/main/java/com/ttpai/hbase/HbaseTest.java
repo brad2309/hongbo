@@ -22,11 +22,11 @@ import org.springframework.data.hadoop.hbase.TableCallback;
 import org.springframework.stereotype.Component;
 
 @SuppressWarnings("deprecation")
-@Component
+//@Component
 public class HbaseTest {
 
     @Autowired
-    private HbaseTemplate hbase;
+    private HbaseTemplate hbaseTemplate;
     
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -36,7 +36,7 @@ public class HbaseTest {
 	
 	public void test1(){
 		
-		hbase.get("test_boss_operate_log_v1", gerReverseAuctionId(50015720L),new RowMapper<Map<String, Object>>() {
+		hbaseTemplate.get("test_boss_operate_log_v1", gerReverseAuctionId(50015720L),new RowMapper<Map<String, Object>>() {
 			public Map<String, Object> mapRow(Result result, int rowNum)throws Exception {
 				List<Cell> ceList = result.listCells();
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -60,7 +60,7 @@ public class HbaseTest {
 			}
 		});
 				
-		hbase.execute("test_boss_operate_log_v1", new TableCallback<ArrayList>() {
+		hbaseTemplate.execute("test_boss_operate_log_v1", new TableCallback<ArrayList>() {
 
 			public ArrayList doInTable(HTableInterface table) throws Throwable {
 				Long id = (long)50015720;

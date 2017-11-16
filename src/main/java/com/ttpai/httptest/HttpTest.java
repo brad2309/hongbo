@@ -3,6 +3,8 @@ package com.ttpai.httptest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -19,18 +21,18 @@ public class HttpTest {
 	public static String API_HOST = "https://api.ttpai.cn/";
 	public static String PUBAPI_HOST = "http://pubapi.ttpai.cn/v1.0/";
 	static{
-//		API_HOST = "http://localhost/";
-//		PUBAPI_HOST = "http://localhost/v1.0/";
+		API_HOST = "http://localhost/";
+		PUBAPI_HOST = "http://localhost/v1.0/";
 	}
 
 	void doTest(){
 //		pubapi1002();
 //		logappAdd();
 //		handlerReferer();
-//		pubapi1001();
+		pubapi1001();
 //		customerLogin();
 //		pubapiSendMessage();
-		lastVersion100001();
+//		lastVersion100001();
 //		customer1012();
 //		customer1017();
 //		customer1022();
@@ -107,15 +109,15 @@ public class HttpTest {
 	void dealer4002(){
 		String url =  API_HOST+"ttpBidHallController",host = "dealer.app.ttpai.cn";
 		//{"star":"","brand":"","carYear":"","cityIds":"1,3","distince":"0-5","family":"","licenseFirst":"","pageNum":1,"userId":2,"auctionStatus":2}
-		MyJson b = MyJson.create().set("auctionStatus",1).set("userId", 2);//.set("licenseFirst", "").set("distince", "0-5").set("cityIds", "1,3");
-		MyJson h = MyJson.create().set("version", "2.4.0").set("service", 4002).set("deviceType", "zzz").set("timestamp", 1L).set("uuUserId", "1").setSign(b);
+		MyJson b = MyJson.create().set("auctionStatus",2).set("userId", 288378).set("licenseFirst", "沪C,津");//.set("distince", "0-5").set("cityIds", "1,3");
+		MyJson h = MyJson.create().set("version", "2.4.1").set("service", 4002).set("deviceType", "zzz").set("timestamp", 1L).set("uuUserId", "1").setSign(b);
 		String result = HttpUtil.postInfoHeader(url, wrapperData(h.toJsonString()), wrapperData(b.toJsonString()), host);
 		System.out.println(unWrappedData(result));
 	}
 	void dealer4042(){
 		String url =  API_HOST+"ttpBidHallController",host = "dealer.app.ttpai.cn";
-		MyJson b = MyJson.create().set("dealerId", 2);
-		MyJson h = MyJson.create().set("version", "2.4.0").set("service", 4042).set("deviceType", "zzz").set("timestamp", 1L).set("uuUserId", "1").setSign(b);
+		MyJson b = MyJson.create().set("dealerId", 0);
+		MyJson h = MyJson.create().set("version", "2.4.1").set("service", 4042).set("deviceType", "zzz").set("timestamp", 1L).set("uuUserId", "1").setSign(b);
 		String result = HttpUtil.postInfoHeader(url, wrapperData(h.toJsonString()), wrapperData(b.toJsonString()), host);
 		System.out.println(unWrappedData(result));
 	}
@@ -166,9 +168,9 @@ public class HttpTest {
 	void pubapi1002(){
 		String url = PUBAPI_HOST+"mobile/synUserDeviceTokens?appid=10014&info=";
 		MyJson b = MyJson.create().set("appProductType", 1).set("deviceTokens", "11")
-				.set("mobileType", 0).set("remark", "1.0.0").set("userId", 6);
-		url += b.toJsonString();
-		HttpUtil.get(url);
+				.set("mobileType", 0).set("remark", "1.0.0").set("userId", 8);
+		url += encodeUrl(b.toJsonString());
+		HttpUtil.post(url);
 	}
 	void mobile1002(){
 		String url = "http://mobile.ttpai.cn/api/userNew";
@@ -189,7 +191,7 @@ public class HttpTest {
 	
 	void pubapi1001(){
 		String url = PUBAPI_HOST+"mobile/getLatestVersion?appid=10014&info=";
-		MyJson b = MyJson.create().set("type", "android_boss").set("version", "1.0.0");
+		MyJson b = MyJson.create().set("type", "android_checker_new").set("version", "1.0.0");
 		url += encodeUrl(b.toJsonString());
 		HttpUtil.get(url);
 	}

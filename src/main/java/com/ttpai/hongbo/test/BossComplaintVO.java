@@ -195,7 +195,10 @@ public class BossComplaintVO {
 		return this.createTime;
 	}
 	public String getCreateTimeText(){
-		return DateFormatUtils.format(createTime, "yyyy-MM-dd");
+		if(createTime!=null){
+			return DateFormatUtils.format(createTime, "yyyy-MM-dd");
+		}
+		return "";
 	}
 
 	/**

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/rabbit
+           http://www.springframework.org/schema/rabbit/spring-rabbit-1.4.xsd
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="rcf" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="host" value="172.16.2.80" />
+		<property name="requestedHeartbeat" value="60" />
+	</bean>
+	<rabbit:connection-factory id="connectionFactory" addresses="172.16.2.80:5672" username="admin" password="ops@ttpai" />
+
+	<bean id="rabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+		<constructor-arg ref="connectionFactory"></constructor-arg>
+<!-- 		<property name="messageConverter"> -->
+<!--             <bean class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter"> -->
+<!--             </bean> -->
+<!--         </property> -->
+	</bean>
+	
+	
+<!-- 	<rabbit:listener-container connection-factory="connectionFactory"> -->
+<!-- 		<rabbit:listener ref="mqReceive" queue-names="hello" /> -->
+<!-- 	</rabbit:listener-container> -->
+
+</beans>           

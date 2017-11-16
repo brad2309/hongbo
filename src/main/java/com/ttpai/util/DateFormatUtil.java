@@ -13,6 +13,10 @@ public class DateFormatUtil {
 		dfMap.put("yyyy-MM-dd", new SimpleDateFormat("yyyy-MM-dd"));
 		dfMap.put("yyyy-MM-dd HH:mm:ss", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
 		dfMap.put("HH:mm:ss", new SimpleDateFormat("HH:mm:ss"));
+		dfMap.put("yyyyMMdd", new SimpleDateFormat("yyyyMMdd"));
+		dfMap.put("HHmmss", new SimpleDateFormat("HHmmss"));
+	}
+	private DateFormatUtil() {
 	}
 	
 	public static SimpleDateFormat getSimpleDateFormat(String pattern){

@@ -22,6 +22,9 @@
 <!--             <url>http://172.16.2.101:8081/nexus/content/repositories/releases/</url> -->
 <!--         </repository> -->
 <!--     </repositories> -->
+<properties>
+	<springframework.version>4.0.7.RELEASE</springframework.version>
+</properties>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -41,6 +44,12 @@
             <artifactId>fastjson</artifactId>  
 		    <version>1.2.0</version>  
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.6.4</version>
+        </dependency>
+        
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>  
@@ -99,6 +108,44 @@
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
         </dependency>
+        <!-- rabbitmq -->
+        <dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit</artifactId>
+			<version>1.4.6.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.rabbitmq</groupId>
+			<artifactId>amqp-client</artifactId>
+			<version>3.5.1 </version>
+		</dependency>
+		<!-- spring -->
+<!-- 		<dependency> -->
+<!--              <groupId>org.springframework</groupId> -->
+<!--              <artifactId>spring-core</artifactId> -->
+<!--              <version>${springframework.version}</version> -->
+<!--          </dependency> -->
+<!--          <dependency> -->
+<!--              <groupId>org.springframework</groupId> -->
+<!--              <artifactId>spring-beans</artifactId> -->
+<!--              <version>${springframework.version}</version> -->
+<!--          </dependency> -->
+         <dependency>
+             <groupId>org.springframework</groupId>
+             <artifactId>spring-context</artifactId>
+             <version>${springframework.version}</version>
+         </dependency>
+         <dependency>
+             <groupId>org.springframework</groupId>
+             <artifactId>spring-webmvc</artifactId>
+             <version>${springframework.version}</version>
+         </dependency>
+         <dependency>
+             <groupId>org.springframework</groupId>
+             <artifactId>spring-web</artifactId>
+             <version>${springframework.version}</version>
+         </dependency>
+
   </dependencies>
   <build>
     <finalName>hongbo</finalName>
