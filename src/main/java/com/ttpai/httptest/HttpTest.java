@@ -16,7 +16,7 @@ import com.ttpai.util.MyJson;
 
 public class HttpTest {
 	
-	public final String DES_KEY = "cxtsc@51";
+	public final String DES_KEY = "51***#@";
 	public final String CHARSET = "UTF-8";
 	public static String API_HOST = "https://api.ttpai.cn/";
 	public static String PUBAPI_HOST = "http://pubapi.ttpai.cn/v1.0/";
